@@ -1,4 +1,4 @@
-name: Workflow A (caller)
+name: Workflow A caller
 
 run-name: "${{ github.run_id }}.${{ github.run_number }}"
 
