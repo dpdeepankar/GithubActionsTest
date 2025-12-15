@@ -2,5 +2,8 @@ on:
   workflow_dispatch:
 
 jobs:
+  
   print:
+   name: print message
+   runs_on: ubuntu-latest
    run: echo "This is the first commit."
