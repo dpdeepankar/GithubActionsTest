@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run on workflow A success
-        run: echo "Workflow A completes successfully"
+        run: echo "Workflow A completes successfully context.payload.workload_run.id ${{ context.payload.workload_run.id }}"
 
   download_context_artifact:
     runs-on: ubuntu-latest
