@@ -21,7 +21,7 @@ jobs:
         id: download-artifact
         uses: dawidd6/action-download-artifact@v11
         with:
-          run_id: context.payload.workload_run.id
+          run_id: ${{ context.payload.workload_run.id }}
           workflow: workflow_run_caller.yml
           workflow_conclusion: success
           name: context.json
