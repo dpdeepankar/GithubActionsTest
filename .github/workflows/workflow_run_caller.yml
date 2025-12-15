@@ -1,6 +1,6 @@
 name: Workflow A caller
 
-run-name: "${{ github.run_id }}.${{ github.run_number }}"
+# run-name: "${{ github.run_id }}.${{ github.run_number }}"
 
 on:
   workflow_dispatch:
