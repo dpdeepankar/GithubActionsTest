@@ -1,9 +1,8 @@
-name: Workflow A caller
-
-# run-name: "${{ github.run_id }}.${{ github.run_number }}"
+name: Workflow A
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [ "main" ]
 
 jobs:
   some_job:  
@@ -18,10 +17,10 @@ jobs:
       - name: Some Step 
         run: |
             printf '{ 
-              "run_id": "${{ github.run_id }}",  
-              "run_number": "${{ github.run_number }}"
+              "prop_1": "Some value",  
+              "prop_2": true
             }' >> context.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: context.json
-          path: context.json
+          path: ./
