@@ -1,4 +1,6 @@
-name: Workflow A
+name: Workflow A (caller)
+
+run-name: "${{ github.run_id }}.${{ github.run_number }}"
 
 on:
   push:
