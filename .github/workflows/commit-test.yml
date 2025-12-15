@@ -8,4 +8,4 @@ jobs:
    runs-on: ubuntu-latest
    steps:
      - name: print message
-       run: echo "This is the first commit."
+       run: echo "This is the second commit."
