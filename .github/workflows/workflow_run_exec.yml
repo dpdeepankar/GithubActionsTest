@@ -1,0 +1,50 @@
+name: Workflow B
+
+on:
+  workflow_run:
+    workflows: ["Workflow A (caller)"]
+    types:
+      - completed
+
+jobs:  
+  run_on_workflow_a_success:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run on workflow A success
+        run: echo "Workflow A completes successfully"
+
+  download_context_artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v11
+        with:
+          run_id: context.payload.workload_run.id
+          workflow: workflow_run_caller.yml
+          workflow_conclusion: success
+          name: context.json
+          repo: ${{ github.repository }}
+
+      - name: Parse context.json using jq
+        id: parse-json
+        shell: bash
+        run: |
+         set -euo pipefail
+
+         RUN_ID=$(jq -r '.run_id' context.json)
+         RUN_NUMBER=$(jq -r '.run_number' context.json)
+
+         echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
+         echo "run_number=$RUN_NUMBER" >> "$GITHUB_OUTPUT"
+
+  log_context_values:
+    needs:
+      - download_context_artifact
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Log Context Values'
+        run: |
+          echo "${{ needs.download_context_artifact.outputs.run_id }}"
+          echo "${{ needs.download_context_artifact.outputs.run_number }}"
