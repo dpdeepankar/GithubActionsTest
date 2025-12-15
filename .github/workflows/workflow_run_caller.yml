@@ -3,8 +3,7 @@ name: Workflow A (caller)
 run-name: "${{ github.run_id }}.${{ github.run_number }}"
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   some_job:  
