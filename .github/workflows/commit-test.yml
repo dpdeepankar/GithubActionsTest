@@ -6,4 +6,6 @@ jobs:
   print:
    name: print message
    runs_on: ubuntu-latest
-   run: echo "This is the first commit."
+   steps:
+     - name: print message
+       run: echo "This is the first commit."
