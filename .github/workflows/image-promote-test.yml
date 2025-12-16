@@ -1,0 +1,30 @@
+name: Image build and promotion test
+
+on:
+  workflow_dispatch:
+    inputs:
+      promote-image:
+        description: 'promote image to ACC and PROD'
+        type: boolean
+        default: false
+        required: false
+
+jobs:
+ deploy:
+   runs-on: ubuntu-latest
+   if: ${{ github.events.inputs.promote-image }} == false
+   steps:
+    - run: echo "running build steps" >> config.txt
+
+    - name: upload aritfact
+      uses: actions/upload-artifact@v4
+      with:
+        name: config.txt
+        path: ./config.txt
+
+ promote:
+   runs-on: ubuntu-latest
+   if: ${{ github.events.inputs.promot-image }} 
+   steps:
+    - run: cat config.txt
+   
