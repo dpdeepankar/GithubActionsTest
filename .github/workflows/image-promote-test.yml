@@ -1,30 +1,30 @@
-name: Image build and promotion test
+name: Image build
 
 on:
   workflow_dispatch:
-    inputs:
-      promote-image:
-        description: 'promote image to ACC and PROD'
-        type: boolean
-        default: false
-        required: false
 
 jobs:
  deploy:
    runs-on: ubuntu-latest
-   if: ${{ github.events.inputs.promote-image }} == false
    steps:
-    - run: echo "running build steps" >> config.txt
+    - name: build docker image
+      run: |
+        echo "Docker build steps"
+
+    - name: push docker image to dev acr
+      run: |
+        echo " docker image pushed"
+        printf '{ 
+              "run_number": "Some value",  
+              "run_id": true,
+              "image_name" : "myimage",
+              "image_version" : "v1",
+            }' >> config.json
 
     - name: upload aritfact
       uses: actions/upload-artifact@v4
       with:
-        name: config.txt
-        path: ./config.txt
+        name: config.json
+        path: ./config.json
 
- promote:
-   runs-on: ubuntu-latest
-   if: ${{ github.events.inputs.promot-image }} 
-   steps:
-    - run: cat config.txt
    
