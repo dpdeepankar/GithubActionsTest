@@ -48,8 +48,8 @@ jobs:
 
       - name: Add Terraform plan to summary
         run: |
-          echo "## Terraform plan" >> $GITHUB_SUMMARY
-          cat tfplan >> $GITHUB_SUMMARY
+          echo "## Terraform plan" >> $GITHUB_STEP_SUMMARY
+          cat tfplan >> $GITHUB_STEP_SUMMARY
 
 
   apply:
