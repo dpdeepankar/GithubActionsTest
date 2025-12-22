@@ -12,7 +12,10 @@ on:
     workflows: [ "Terraform Build" ]
     types: ["completed"]
 
-
+permissions:
+  actions: read
+  pull-requests: write
+  id-token: write
 jobs:
   plan:
     runs-on: ubuntu-latest
