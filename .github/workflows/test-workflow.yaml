@@ -1,6 +1,11 @@
 name: test workflow
 
 on:
+  push:
+    branches: 
+     - feature1
+    paths: 
+     - .github/wprkflows/test-workflow.yaml
   workflow_dispatch:
 
 jobs:
