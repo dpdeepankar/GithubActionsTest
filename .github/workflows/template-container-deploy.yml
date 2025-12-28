@@ -36,7 +36,7 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name == 'main' && 'prod' || startsWith(github.ref_name, 'uat') && 'uat' || 'dev')
+    environment: ${{ github.ref_name == 'main' && 'prod' || startsWith(github.ref_name, 'uat') && 'uat' || 'dev' }}
     steps:
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v11
