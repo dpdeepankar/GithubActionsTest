@@ -9,6 +9,9 @@ on:
       image_tag:
         required: true
         type: string
+      workingDirectory:
+        required: true
+        type: string
     secrets:
       SNYK_TOKEN:
         required: true
@@ -29,7 +32,7 @@ jobs:
       # ---------- Docker Build ----------
       - name: Build Docker image
         run: |
-          docker build -t ${{ inputs.image_name }}:${{ inputs.image_tag }} .
+          docker build -t ${{ inputs.image_name }}:${{ inputs.image_tag }} ${{ inputs.workingDirectory }}
 
       # ---------- SNYK SCAN ----------
       - name: Snyk Container Scan
