@@ -18,6 +18,9 @@ on:
       resource_group:
         required: true
         type: string
+      buildRunId:
+        required: true
+        type: string
     secrets:
       AZURE_CLIENT_ID:
         required: true
@@ -35,11 +38,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download image artifact
-        uses: actions/download-artifact@v4
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v11
         with:
+          workflow: container-build.yml
+          run_id: ${{ inputs.buildRunId }}
           name: container-image
-
+          
       - name: Load Docker image
         run: docker load -i image.tar
 
