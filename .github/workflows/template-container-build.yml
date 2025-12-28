@@ -62,3 +62,5 @@ jobs:
         with:
           name: container-image
           path: image.tar
+          retention-days: 1
+          
