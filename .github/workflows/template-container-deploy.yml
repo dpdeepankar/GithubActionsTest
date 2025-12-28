@@ -21,6 +21,9 @@ on:
       buildRunId:
         required: true
         type: string
+      branch_name:
+        required: true
+        type: string
     secrets:
       AZURE_CLIENT_ID:
         required: true
@@ -44,7 +47,7 @@ jobs:
          
   deploy:
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name == 'main' && 'prod' || startsWith(github.ref_name, 'uat') && 'uat' || 'dev' }}
+    environment: ${{ inputs.branch_name == 'main' && 'prod' || startsWith(inputs.branch_name, 'uat') && 'uat' || 'dev' }}
     steps:
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v11
