@@ -1,0 +1,61 @@
+name: Template Container Build
+
+on:
+  workflow_call:
+    inputs:
+      image_name:
+        required: true
+        type: string
+      image_tag:
+        required: true
+        type: string
+    secrets:
+      SNYK_TOKEN:
+        required: true
+      MEND_API_KEY:
+        required: true
+      MEND_USER_KEY:
+        required: true
+      MEND_EMAIL:
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # ---------- Docker Build ----------
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ inputs.image_name }}:${{ inputs.image_tag }} .
+
+      # ---------- SNYK SCAN ----------
+      - name: Snyk Container Scan
+        uses: snyk/actions/docker@v3
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: ${{ inputs.image_name }}:${{ inputs.image_tag }}
+        continue-on-error: true   # shift-left mode
+
+      # ---------- MEND SCAN ----------
+      - name: Mend Scan
+        uses: mend-toolkit/mend-action@v2
+        env:
+          MEND_API_KEY: ${{ secrets.MEND_API_KEY }}
+          MEND_USER_KEY: ${{ secrets.MEND_USER_KEY }}
+          MEND_EMAIL: ${{ secrets.MEND_EMAIL }}
+
+      # ---------- Save Image as TAR ----------
+      - name: Save image as tar
+        run: |
+          docker save ${{ inputs.image_name }}:${{ inputs.image_tag }} \
+          -o image.tar
+
+      - name: Upload image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: container-image
+          path: image.tar
