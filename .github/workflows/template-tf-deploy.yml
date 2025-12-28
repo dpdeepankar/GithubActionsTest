@@ -95,7 +95,7 @@ jobs:
   Terraform-Apply:
     name: Terraform apply
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name == 'main' && 'prod' || startsWith( github.ref_name, 'dev') && 'dev' || startsWith( github.ref_name, 'uat') && 'uat' }}
+    environment: ${{ github.ref_name == 'main' && 'prod' || startsWith( github.ref_name, 'dev') && 'dev' || startsWith( github.ref_name, 'uat') && 'uat' || 'dev' }}
     needs: Terraform-Plan
     steps:
       - name: Download artifact
