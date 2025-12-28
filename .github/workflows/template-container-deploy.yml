@@ -34,6 +34,14 @@ permissions:
   id-token: write   # OIDC mandatory
 
 jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+     - name: print env
+       run: |
+         env
+         echo branch: ${{ github.ref_name }}
+         
   deploy:
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name == 'main' && 'prod' || startsWith(github.ref_name, 'uat') && 'uat' || 'dev' }}
