@@ -36,7 +36,6 @@ jobs:
           run_id: ${{ inputs.buildRunId }}
           name: terraform-source-artifact
           repository: ${{ github.repository }}
-          branch: ${{ github.ref }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
