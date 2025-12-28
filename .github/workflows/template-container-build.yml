@@ -12,12 +12,12 @@ on:
     secrets:
       SNYK_TOKEN:
         required: true
-      MEND_API_KEY:
-        required: true
-      MEND_USER_KEY:
-        required: true
-      MEND_EMAIL:
-        required: true
+      # MEND_API_KEY:
+      #   required: true
+      # MEND_USER_KEY:
+      #   required: true
+      # MEND_EMAIL:
+      #   required: true
 
 jobs:
   build:
@@ -41,12 +41,12 @@ jobs:
         continue-on-error: true   # shift-left mode
 
       # ---------- MEND SCAN ----------
-      - name: Mend Scan
-        uses: mend-toolkit/mend-action@v2
-        env:
-          MEND_API_KEY: ${{ secrets.MEND_API_KEY }}
-          MEND_USER_KEY: ${{ secrets.MEND_USER_KEY }}
-          MEND_EMAIL: ${{ secrets.MEND_EMAIL }}
+      # - name: Mend Scan
+      #   uses: mend-toolkit/mend-action@v2
+      #   env:
+      #     MEND_API_KEY: ${{ secrets.MEND_API_KEY }}
+      #     MEND_USER_KEY: ${{ secrets.MEND_USER_KEY }}
+      #     MEND_EMAIL: ${{ secrets.MEND_EMAIL }}
 
       # ---------- Save Image as TAR ----------
       - name: Save image as tar
