@@ -33,7 +33,7 @@ jobs:
 
       # ---------- SNYK SCAN ----------
       - name: Snyk Container Scan
-        uses: snyk/actions/docker@v3
+        uses: snyk/actions/docker@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
