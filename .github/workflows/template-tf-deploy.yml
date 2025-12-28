@@ -29,14 +29,14 @@ jobs:
   Terraform-Plan:
     runs-on: ubuntu-latest
     steps:
-     - name: Download artifact
-       uses: dawidd6/action-download-artifact@v11
-       with:
-         workflow: terraform-build.yml
-         run_id: ${{ inputs.buildRunId }}
-         name: terraform-source-artifact
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v11
+        with:
+          workflow: terraform-build.yml
+          run_id: ${{ inputs.buildRunId }}
+          name: terraform-source-artifact
 
-     - name: Setup Terraform
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: latest
