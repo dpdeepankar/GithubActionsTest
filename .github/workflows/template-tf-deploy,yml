@@ -1,0 +1,111 @@
+name: Template Terraform Deployment
+
+on:
+  workflow_call:
+    inputs:
+      buildRunId:
+        required: true
+        type: string
+      workingDirectory:
+        required: true
+        type: string
+      backendStorageAccount:
+        required: true
+        type: string
+      backendContainerName:
+        required: true
+        type: string
+      backendKey:
+        required: true
+        type: string
+      backendResourceGroup:
+        required: true
+        type: string
+
+env:
+  TF_WORKING_DIR: ${{ github.workspace }}/${{ inputs.workingDirectory }}
+
+jobs:
+  Terraform-Plan:
+    runs-on: ubuntu-latest
+    steps:
+     - name: Download artifact
+       uses: dawidd6/action-download-artifact@v11
+       with:
+         workflow: terraform-build.yml
+         run_id: ${{ inputs.buildRunId }}
+         name: terraform-source-artifact
+
+     - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: latest
+
+      - name: Terraform init
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          echo "terraform init"
+          terraform init -input=false  \
+          -backend-config="use_azuread_auth=true" \
+          -backend-config="storage_account_name=terrafromtfstate" \
+          -backend-config="container_name=tfstate" \
+          -backend-config="key=environments/dev01/terraform.tfstate"
+
+      - name: Terraform Plan
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          echo "terrafprm plan"
+          terraform plan -input=false -no-color -out=tfplan
+
+      - name: Add Terraform plan to summary
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          echo "## Terraform Plan ${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
+          terraform show -no-color tfplan > tfplan.txt
+          cat tfplan.txt >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload Terraform Source Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan-${{ github.run_id }}
+          path: ${{ env.TF_WORKING_DIR }}/tfplan
+          retention-days: 3  # 3 months retention
+          if-no-files-found: error
+
+
+  Terraform-Apply:
+    name: Terraform apply
+    runs-on: ubuntu-latest
+    environment: ${{ gitub.ref_name == 'main' $$ 'prod' || startsWith( gitub.ref_name, 'dev') && 'dev' || startsWith( github.ref_name, 'uat') && 'uat' }}
+    needs: Terraform-Plan
+    steps:
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v11
+        with:
+         workflow: terraform-build.yml
+         run_id: ${{ inputs.buildRunId }}
+         name: terraform-source-artifact
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.14.0
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: terraform-plan-${{ github.run_id }}
+          path: ${{ env.TF_WORKING_DIR }}
+
+      - name: Terraform init
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          terraform init -input=false  \
+          -backend-config="use_azuread_auth=true" \
+          -backend-config="storage_account_name=${{ inputs.backendStorageAccount }}" \
+          -backend-config="container_name=${{ inputs.backendContainerName }}" \
+          -backend-config="key=${{ inputs.backendKey }}" \
+          -backend-config="resource_group_name=${{ inputs.backendResourceGroup }}
+
+      - name: Terraform Apply
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform apply -input=false -no-color tfplan
