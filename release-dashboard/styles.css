@@ -35,11 +35,20 @@ main {
   margin-top: 0;
 }
 
+/*
 .env-buttons {
   margin-top: 1rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+}
+*/
+
+.env-buttons {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;   /* 👈 THIS IS THE KEY */
+  gap: 0.6rem;
 }
 
 .env {
