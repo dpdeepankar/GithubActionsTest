@@ -18,7 +18,7 @@ jobs:
         env:
          GH_TOKEN: ${{ secrets.GITHUB_PAT }}
         run: |
-         RESPONSE=$(curl -s -H "Authorization: token $GH_TOKEN" \
+         RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
                     -H "Accept: application/vnd.github.v3+json" \
                     "https://api.github.com/repos/dpdeepankar/AdoToGithubAction/actions/runs?per_page=50")
 
