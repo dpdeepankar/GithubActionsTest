@@ -2,46 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Release Approval Dashboard</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Workflow Runs Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <h1>Recent Workflow Runs</h1>
+  <p>Last updated: <span id="updated"></span></p>
+  <table id="runs-table">
+    <thead>
+      <tr>
+        <th>Workflow</th>
+        <th>Branch</th>
+        <th>Status</th>
+        <th>Conclusion</th>
+        <th>Started</th>
+        <th>Link</th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
 
-<header>
-  <h1>🚀 Release Approval Dashboard</h1>
-  <p>Select a service to review its deployment workflows</p>
-</header>
-
-<main id="services"></main>
-
-<footer>
-  <p>Powered by GitHub Actions · Read-only dashboard</p>
-</footer>
-
-<script src="data.js"></script>
-<script>
-  const container = document.getElementById("services");
-
-  services.forEach(service => {
-    const card = document.createElement("div");
-    card.className = "service-card";
-
-    card.innerHTML = `
-      <h2>${service.name}</h2>
-      <p>${service.description}</p>
-
-      <div class="env-buttons">
-        ${service.environments.map(env => `
-          <a href="${env.url}" target="_blank" class="env ${env.name}">
-            ${env.label}
-          </a>
-        `).join("")}
-      </div>
-    `;
-
-    container.appendChild(card);
-  });
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
