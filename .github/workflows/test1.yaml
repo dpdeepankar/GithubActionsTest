@@ -1,6 +1,12 @@
 name: test1
 
 on:
+  push:
+    branches:
+      - 'dev[0-9][0-9]'
+      - dlv
+      - acc
+      
   workflow_dispatch: 
 
 jobs:
