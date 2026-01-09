@@ -16,16 +16,15 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-      
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      # Static files directly upload kar rahe hain
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: release-dashboard/
+          path: release-dashboard   # 🔥 THIS FIXES IT
 
       - name: Deploy to GitHub Pages
         id: deployment
