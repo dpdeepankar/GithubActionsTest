@@ -1,0 +1,31 @@
+name: Template Terraform Build
+
+on:
+  workflow_call:
+
+jobs:
+  Terraform-build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4
+
+    - name: run terraform validations
+      run:
+        echo "running terraform validations"
+
+    - name: upload-artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: terraform-source-artifact
+        path: ${{ github.workspace }}
+
+    - name: Add build summary
+      run: |
+        echo "::group:: Build Summary" >> $GITHUB_STEP_SUMMARY
+        echo "Build Run ID: ${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
+        echo "Branch: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "Full Branch name: ${{ github.ref }}" >> $GITHUB_STEP_SUMMARY
+        echo "Ran from repository: ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
+        echo "::endgroup::" >> $GITHUB_STEP_SUMMARY
+        

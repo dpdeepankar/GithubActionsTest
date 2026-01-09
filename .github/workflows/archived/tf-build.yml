@@ -1,0 +1,19 @@
+name: Terraform Build
+
+run-name: ${{ github.run_id }}
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v6
+
+    - name: upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: drop
+        path: ${{ github.workspace }}

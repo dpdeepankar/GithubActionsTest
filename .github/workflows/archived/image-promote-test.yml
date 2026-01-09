@@ -1,0 +1,30 @@
+name: Image build
+
+on:
+  workflow_dispatch:
+
+jobs:
+ deploy:
+   runs-on: ubuntu-latest
+   steps:
+    - name: build docker image
+      run: |
+        echo "Docker build steps"
+
+    - name: push docker image to dev acr
+      run: |
+        echo " docker image pushed"
+        printf '{ 
+              "run_number": "Some value",  
+              "run_id": true,
+              "image_name" : "myimage",
+              "image_version" : "v1",
+            }' >> config.json
+
+    - name: upload aritfact
+      uses: actions/upload-artifact@v4
+      with:
+        name: config.json
+        path: ./config.json
+
+   
