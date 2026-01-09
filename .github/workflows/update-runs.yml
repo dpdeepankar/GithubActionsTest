@@ -16,27 +16,35 @@ jobs:
 
       - name: Fetch and process workflow runs
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_PAT }}
+         GH_TOKEN: ${{ secrets.GITHUB_PAT }}
         run: |
-          RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
-                          -H "Accept: application/vnd.github.v3+json" \
-                          "https://api.github.com/repos/dpdeepankar/AdoToGithubAction/actions/runs?per_page=50")
+         RESPONSE=$(curl -s -H "Authorization: token $GH_TOKEN" \
+                    -H "Accept: application/vnd.github.v3+json" \
+                    "https://api.github.com/repos/dpdeepankar/AdoToGithubAction/actions/runs?per_page=50")
 
-          # Check if response contains workflow_runs
-          if echo "$RESPONSE" | grep -q "workflow_runs"; then
-            echo "$RESPONSE" | jq '.workflow_runs | map({
-              name: .name,
-              branch: .head_branch // "—",
-              status: .status,
-              conclusion: .conclusion // "Pending",
-              created_at: .created_at,
-              html_url: .html_url
-            })' > data.json
-          else
-            # Fallback: write empty array on error
-            echo "[]" > release-dashboard/data.json
-            echo "Warning: API response invalid or no runs found" >&2
-          fi
+         # Write jq filter to a temporary file (safest way to avoid quoting hell)
+         cat > filter.jq << 'EOF'
+          .workflow_runs // [] | map({
+          name: .name,
+          branch: .head_branch // "—",
+          status: .status,
+          conclusion: .conclusion // "Pending",
+          created_at: .created_at,
+          html_url: .html_url
+          })
+         EOF
+
+         # Check if response is valid JSON with workflow_runs
+         if echo "$RESPONSE" | jq -e '.workflow_runs' >/dev/null 2>&1; then
+          echo "$RESPONSE" | jq -f filter.jq > data.json
+         else
+          echo "[]" > data.json
+         echo "Warning: Invalid API response or no runs found" >&2
+         fi
+
+         # Clean up
+         rm -f filter.jq
+         
 
       - name: Commit changes if any
         uses: EndBug/add-and-commit@v9
