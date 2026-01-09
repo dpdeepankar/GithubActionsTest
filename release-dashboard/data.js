@@ -32,7 +32,7 @@ const services = [
       {
         name: "dev",
         label: "DEV",
-        url: "https://github.com/org/payments-api/actions/workflows/service-release.yml"
+        url: "https://github.com/dpdeepankar/GithubActionsTest/actions/workflows/test1.yaml?query=branch:dev01"
       },
       {
         name: "prod",
