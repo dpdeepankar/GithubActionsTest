@@ -6,22 +6,22 @@ const services = [
       {
         name: "dev",
         label: "DEV",
-        url: "https://github.com/org/orders-api/actions/workflows/service-release.yml"
+        url: "https://github.com/dpdeepankar/AdoToGithubAction/actions/workflows/terraform-deploy.yml"
       },
       {
         name: "dlv",
         label: "DLV",
-        url: "https://github.com/org/orders-api/actions/workflows/service-release.yml"
+        url: "https://github.com/dpdeepankar/AdoToGithubAction/actions/workflows/container-deploy.yml"
       },
       {
         name: "acc",
         label: "ACC",
-        url: "https://github.com/org/orders-api/actions/workflows/service-release.yml"
+        url: "https://github.com/dpdeepankar/AdoToGithubAction/actions/workflows/terraform-deploy.yml"
       },
       {
         name: "prod",
         label: "PROD",
-        url: "https://github.com/org/orders-api/actions/workflows/service-release.yml"
+        url: "https://github.com/dpdeepankar/AdoToGithubAction/actions/workflows/container-deploy.yml"
       }
     ]
   },
