@@ -1,6 +1,6 @@
 const services = [
   {
-    name: "Orders API",
+    name: "ib2024",
     description: "Handles order lifecycle and fulfillment",
     environments: [
       {
@@ -26,7 +26,7 @@ const services = [
     ]
   },
   {
-    name: "Payments API",
+    name: "btw2024",
     description: "Processes payments and refunds",
     environments: [
       {
@@ -40,5 +40,21 @@ const services = [
         url: "https://github.com/org/payments-api/actions/workflows/service-release.yml"
       }
     ]
-  }
+  },
+  {
+    name: "abv2024",
+    description: "Processes payments and refunds",
+    environments: [
+      {
+        name: "dev",
+        label: "DEV",
+        url: "https://github.com/org/payments-api/actions/workflows/service-release.yml"
+      },
+      {
+        name: "prod",
+        label: "PROD",
+        url: "https://github.com/org/payments-api/actions/workflows/service-release.yml"
+      }
+    ]
+  },
 ];
