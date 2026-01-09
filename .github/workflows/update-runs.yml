@@ -1,0 +1,46 @@
+name: Update Workflow Runs Data
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'   # every 4 hours
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch and process workflow runs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_PAT }}
+        run: |
+          RESPONSE=$(curl -s -H "Authorization: token $GH_TOKEN" \
+                          -H "Accept: application/vnd.github.v3+json" \
+                          "https://api.github.com/repos/${{ github.repository }}/actions/runs?per_page=50")
+
+          # Check if response contains workflow_runs
+          if echo "$RESPONSE" | grep -q "workflow_runs"; then
+            echo "$RESPONSE" | jq '.workflow_runs | map({
+              name: .name,
+              branch: .head_branch // "—",
+              status: .status,
+              conclusion: .conclusion // "Pending",
+              created_at: .created_at,
+              html_url: .html_url
+            })' > data.json
+          else
+            # Fallback: write empty array on error
+            echo "[]" > data.json
+            echo "Warning: API response invalid or no runs found" >&2
+          fi
+
+      - name: Commit changes if any
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'data.json'
+          message: 'Update workflow runs data [skip ci]'
+          default_author: github_actions
