@@ -14,5 +14,5 @@ jobs:
     environment: test
     steps:
       - name: test
-        run: echo "$(TEMP_VAR)"
+        run: echo "${{ vars.TEMP_VAR }}"
   
