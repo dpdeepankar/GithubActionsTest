@@ -8,6 +8,10 @@ on:
       
   workflow_dispatch: 
 
+permissions:
+  id-token: write   # Required for OIDC authentication
+  contents: read    # Required for actions/checkout (if you use it)
+  
 jobs:
   test:
     runs-on: ubuntu-latest
