@@ -28,6 +28,7 @@ jobs:
   deploy-matrix:
     needs: [approve-and-auth]
     runs-on: ubuntu-latest
+    environment: test
     strategy:
       matrix:
         component: [ 1,2,3 ]
@@ -35,7 +36,9 @@ jobs:
       - name: Azure Login from shared credentials
         uses: azure/login@v2
         with:
-          creds: ${{ needs.approve-and-auth.outputs.azure-creds }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Deploy ${{ matrix.component }}
         run: |
