@@ -2,7 +2,9 @@ name: test matrix job
 
 on:
   workflow_dispatch: 
-  
+
+permissions:
+  id-token: write
 jobs:
 
   approve-and-auth:
