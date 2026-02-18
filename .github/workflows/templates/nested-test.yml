@@ -1,0 +1,14 @@
+on:
+  workflow_call:
+    inputs:
+      name:
+        type: string
+        required: true
+
+jobs:
+  print-message:
+    runs-on: ubuntu-latest
+    steps:
+    - name: print message
+      run: |
+        echo "hello ${{ inputs.name }}"
