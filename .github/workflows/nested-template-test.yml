@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  uses: .github/workflows/templates/nested-test.yml
-  with:
-    name: "Deepankar"
+  print:
+    uses: .github/workflows/templates/nested-test.yml
+    with:
+      name: "Deepankar"
