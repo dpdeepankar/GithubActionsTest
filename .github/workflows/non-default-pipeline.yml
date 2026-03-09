@@ -1,0 +1,11 @@
+name: non-default pipeline
+
+on:
+  push
+
+jobs:
+  testjob:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run cmd
+        run: echo "Running from non default branch"
