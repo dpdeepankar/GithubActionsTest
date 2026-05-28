@@ -1,3 +1,3 @@
 {
-  "tempvar": "#{TEMP_VAR}#"
+  "tempvar": "#{vars.TEMP_VAR}#"
 }
