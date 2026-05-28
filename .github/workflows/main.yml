@@ -13,7 +13,13 @@ jobs:
       - name: print value
         run: |
           echo ${{ vars.TEMP_VAR }}
-          echo ${{ TEMP_VAR }}
+      - name: read file 
+        run: cat test.js
+      - uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["**/*.js"]'
+      - name: read file again
+        run: cat test.js
   # login:
   #  runs-on: ubuntu-latest
   #  environment: prod
