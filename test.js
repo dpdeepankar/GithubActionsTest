@@ -1,0 +1,3 @@
+{
+  "tempvar": "#{TEMP_VAR}#"
+}
