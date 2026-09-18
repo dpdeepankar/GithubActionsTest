@@ -23,6 +23,9 @@ jobs:
       - name: test2-step2
         run: echo "running test 2 step 2"
 
+  test3:
+    uses: dpdeepankar/GithubActionsTest/.github/workflows/template-test2.yml@main
+
       
 
         
