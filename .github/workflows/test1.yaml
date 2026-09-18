@@ -40,6 +40,6 @@ jobs:
          -H "Accept: application/vnd.github+json" \
          -H "X-GitHub-Api-Version: 2026-03-10" \
          /repos/dpdeepankar/GithubActionsTest/dispatches \
-         -f 'event_type=test-template'" 
+         -f 'event_type=test-template'
     
   
