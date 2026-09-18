@@ -1,7 +1,7 @@
 name: test template
 on:
   repository_dispatch:
-    [test-template]
+    types: [test-template]
   workflow_call: 
 
 jobs:
